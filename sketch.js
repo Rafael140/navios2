@@ -49,7 +49,8 @@ function draw() {
   showBoats();
 
   for (var i=0; i < balls.length; i++){
-    showCannonBalls(balls[i]);
+    showCannonBalls(balls[i], i);
+    collisionWithBoat(i);
   }
 
 
@@ -68,17 +69,21 @@ function keyPressed(){
   if(keyCode === DOWN_ARROW){
 
     cannonBall = new CannonBall (cannon.x, cannon.y);
+    Matter.Body.setAngle(cannonBall.body, cannon.angle)
     balls.push(cannonBall);
 
   }
 
 }
 
-function showCannonBalls(ball){
+function showCannonBalls(ball, index){
 
   if(ball){
     ball.display();
+    if(ball.body.position.x >= width || ball.body.position.y >= height -50 );
+    ball.remove(index);
   }
+
 
 }
 
@@ -99,7 +104,7 @@ function showBoats(){
 
     for(var i=0; i < boats.length; i++){
       if(boats[i]){
-        Matter.Body.setVelocity(boat.body, {x:-1 ,y:0 })
+        Matter.Body.setVelocity(boats[i].body, {x:-1 ,y:0 });
         boats[i].display();
       }
     }
@@ -112,7 +117,22 @@ function showBoats(){
 
   }
 
+}
 
+function collisionWithBoat(index){
 
+  for(var i=0; i < boats.length; i++){
 
+    if(balls[index] !== undefined && boats[i] !== undefined){
+      var collision = Matter.SAT.collides(balls[index].body, boats[i].body)
+
+      if(collision.collided){
+
+        boats[i].remove(i);
+
+        Matter.World.remove(world, balls[index].body);
+        delete balls[index];
+      }
+    }
+  }
 }
