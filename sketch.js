@@ -1,7 +1,7 @@
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
-const Body = Matter.Bodies;
+const Body = Matter.Body;
 
 var engine, world, backgroundImg;
 
@@ -28,10 +28,10 @@ function setup() {
   ground = Bodies.rectangle(0, height - 1, width*2, 1, {isStatic:true});
   World.add(world, ground);
 
-  tower = Bodies.rectangle(80, 200, 160, 310, {isStatic:true});
+  tower = Bodies.rectangle(80, 190, 160, 310, {isStatic:true});
   World.add(world, tower);
 
-  cannon = new Cannon (180, 120, 130, 110, angle);
+  cannon = new Cannon (190, 110, 130, 110, angle);
   
 }
 
@@ -48,7 +48,7 @@ function draw() {
 
   showBoats();
 
-  for (var i=0; i < balls.length; i++){
+  for (var i = 0; i < balls.length; i++){
     showCannonBalls(balls[i], i);
     collisionWithBoat(i);
   }
@@ -69,19 +69,20 @@ function keyPressed(){
   if(keyCode === DOWN_ARROW){
 
     cannonBall = new CannonBall (cannon.x, cannon.y);
-    Matter.Body.setAngle(cannonBall.body, cannon.angle)
+    Matter.Body.setAngle(cannonBall.body, cannon.angle);
     balls.push(cannonBall);
 
   }
 
 }
 
-function showCannonBalls(ball, index){
+function showCannonBalls(ball, index) {
 
-  if(ball){
+  if (ball){
     ball.display();
-    if(ball.body.position.x >= width || ball.body.position.y >= height -50 );
+    if (ball.body.position.x >= width || ball.body.position.y >= height -50 ){
     ball.remove(index);
+    }
   }
 
 
@@ -94,7 +95,7 @@ function showBoats(){
     if(boats[boats.length -1] === undefined ||
        boats[boats.length -1].body.position.x < width -300){
 
-        var positions = [-40, -60, -70, -20]
+        var positions = [-40, -60, -70, -20];
         var position = random(positions);
         var boat = new Boat(width +70, height -60, 170, 170, position);
         boats.push(boat);
@@ -121,10 +122,10 @@ function showBoats(){
 
 function collisionWithBoat(index){
 
-  for(var i=0; i < boats.length; i++){
+  for(var i = 0; i < boats.length; i++){
 
     if(balls[index] !== undefined && boats[i] !== undefined){
-      var collision = Matter.SAT.collides(balls[index].body, boats[i].body)
+      var collision = Matter.SAT.collides(balls[index].body, boats[i].body);
 
       if(collision.collided){
 
