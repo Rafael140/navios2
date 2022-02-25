@@ -24,7 +24,17 @@ class Boat {
 
     }
 
+    remove(index){
 
+        setTimeout(() =>{
+
+            Matter.World.remove(world, boats[index].body);
+            delete boats[index];
+
+        }, 2000);
+
+
+    }
 
 
 
